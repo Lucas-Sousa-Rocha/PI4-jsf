@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Seja Bem-vindo ao PI</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background-image: linear-gradient(to left bottom, #181818, #19191d, #191a23, #171b28,
+                #141d2e);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #FFFF;
+            width: 100%;
+            flex: 0 0 auto;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .usuario {
+            display: flex;
+            align-items: center;
+            padding-right: 20px;
+        }
+
+        .navigation-container {
+            background-color: #fff;
+            color: #fff;
+            flex: 0 0 auto;
+            z-index: 1;
+            overflow-y: auto;
+            position: fixed;
+            top: 47px;
+            left: -250px; /* Fora da tela */
+            width: 200px; /* Largura do menu */
+            height: 100%;
+            transition: left 0.3s ease;
+            /* Transição suave ao mover para a esquerda */
+        }
+
+        .navigation-container.active {
+            left: 0; /* Move para a esquerda quando ativo */
+        }
+
+        .p-megamenu-vertical {
+            width: 100%;
+        }
+
+        .p-menu-vertical {
+            width: 100%;
+        }
+
+        .p-mega-octopus-panel {
+            width: 100%;
+        }
+
+        .content {
+            flex: 1 1 auto;
+            padding: 20px;
+            overflow-y: auto;
+            color: #fff;
+            margin-top: 60px;
+            padding-left: 20px;
+            transition: padding-left 0.3s ease;
+        }
+
+        .content.active {
+            padding-left: 270px;
+        }
+    </style>
+</h:head>
+
+
+<h:body>
+    <div class="header">
+        <div class="header-botao-menu" id="toggleNav">
+            <i class="pi pi-bars" style="font-size: 24px; cursor: pointer;"></i>
+        </div>
+        <div class="usuario">
+            <p> Seja Bem Vindo(a) #{loginBean.usuario.nome}.</p>
+        </div>
+    </div>
+
+
+    <div class="navigation-container">
+        <h:form>
+            <p:megaMenu orientation="vertical" autoDisplay="false" styleClass="p-megamenu-vertical">
+                
+                <p:menuitem value="Home" actionListener="#{navegacaoBean.setCurrentPage('home.xhtml')}"
+                    icon="pi pi-home" update="contentPanel" />
+                    
+                <p:menuitem value="Paciente"
+                    actionListener="#{navegacaoBean.setCurrentPage('paciente-pesquisar.xhtml')}"
+                    icon="pi pi-user" update="contentPanel" />
+                    
+				<p:menuitem value="Médico"
+                    actionListener="#{navegacaoBean.setCurrentPage('medico-pesquisar.xhtml')}"
+                    icon="pi pi-heart" update="contentPanel" />
+                    
+                <p:menuitem value="Agendamento"
+                    actionListener="#{navegacaoBean.setCurrentPage('agendamento-pesquisar.xhtml')}"
+                    icon="pi pi-clock" update="contentPanel" />
+                    
+                <p:menuitem value="Consulta"
+                    actionListener="#{navegacaoBean.setCurrentPage('consulta-pesquisar.xhtml')}"
+                    icon="pi pi-file-o" update="contentPanel" />
+                    
+                <p:menuitem value="IMC"
+                    actionListener="#{navegacaoBean.setCurrentPage('imc-pesquisar.xhtml')}"
+                    icon="pi pi-chart-line" update="contentPanel" />
+
+                <p:menuitem value="Usuário"
+                    actionListener="#{navegacaoBean.setCurrentPage('usuario-pesquisar.xhtml')}"
+                    icon="pi pi-id-card" update="contentPanel" />
+
+				<p:menuitem value="Github"
+	            	url="https://github.com/igor-ribeiro-sousa/projeto-jsf-pi"
+	            	icon="pi pi-github" />
+
+				<p:menuitem value="Logout" action="#{loginBean.logout}"
+                icon="pi pi-power-off" />
+            </p:megaMenu>
+        </h:form>
+    </div>
+
+    <div class="content">
+        <h:panelGroup id="contentPanel">
+        	<ui:include src="#{navegacaoBean.currentPage}" oncomplete="PF('contentPanel').update()" />
+        </h:panelGroup>
+    </div>
+
+
+    <script>
+        document.getElementById('toggleNav').addEventListener(
+            'click',
+            function() {
+                document.querySelector('.navigation-container').classList.toggle('active');
+                document.querySelector('.content').classList.toggle('active');
+            });
+    </script>
+</h:body>
+
+</html>
